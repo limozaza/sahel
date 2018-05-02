@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Login!</h1>
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+                {{ form_start(form) }}
+                    {{ form_row(form._username) }}
+                    {{ form_row(form._password) }}
+                    <button type="submit" class="btn btn-success" formnovalidate>login</button>
+                    &nbsp;
+                    {#<a href="{{ path('user_register') }}">S'inscrire</a>#}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

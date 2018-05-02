@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        Middle Office
+        <p>
+            <a href="{{ path('security_logout') }}">Deconnexion</a>
+        </p>
+    </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
