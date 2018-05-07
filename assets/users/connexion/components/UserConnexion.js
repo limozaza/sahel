@@ -1,31 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-import { connect } from 'react-redux';
-import { loginUser, addTokenIncookie } from '../actions';
+import $ from 'jquery';
 
-import Routing from '../../../js/Utils/Routing';
+import { connect } from 'react-redux';
 
 class UserConnexion extends Component {
+
 
     state = {
         loadingConnexion : false
     }
-
-
-    componentWillReceiveProps = (nextProps) => {
-        if(this.props.user !== nextProps.user) {
-            const flag = this.state.loadingConnexion;
-            this.setState({
-                loadingConnexion: !flag
-            });
-            if(typeof nextProps.user.token !== "undefined")
-            {
-                this.props.addTokenIncookie(nextProps.user.token)
-            }
-        }
-    }
-
 
     renderUsernameField = (field)=> {
         const classes = [];
@@ -77,88 +62,94 @@ class UserConnexion extends Component {
         );
     }
 
+
     enregistrer = (values) => {
         this.setState({
             loadingConnexion: true
         })
-        this.props.loginUser(values)
+
+
+        setTimeout(function () {
+            $('#login_form__username').val(values.username)
+            $('#login_form__password').val(values.password)
+
+            $('form[name="login_form"]').submit();
+
+        }, 2000);
+
+        //
+
+        //this.props.loginUser(values)
     }
 
-
-
     render() {
-        const { handleSubmit} = this.props
+        const { handleSubmit} = this.props;
 
-        let msgUnauthorized = null;
         let buttonConnexion = null;
 
 
 
-        if(this.props.user.error == "Unauthorized"){
-            msgUnauthorized = (
-            <div className="alert alert-danger" role="alert">
-                Vous n'etes pas autorisé de vous connectez
-            </div>
-            );
-        }
-
         if(this.state.loadingConnexion)
         {
             buttonConnexion = (
-                <button type="submit" className="btn btn-primary disabled">
-                    <i className="fa fa-circle-o-notch fa-spin"></i>
-                    Se connecter
-                </button>
+                <button type="submit" className="btn btn-primary btn-block disabled"><i className="fa fa-spinner fa-spin" aria-hidden="true"></i> Se connecter</button>
             );
         }
         else{
             buttonConnexion = (
-                <button type="submit" className="btn btn-primary">
-                    Se connecter
-                </button>
+                <button type="submit" className="btn btn-primary btn-block">Se connecter</button>
             );
         }
 
+
         return (
-            <form onSubmit={handleSubmit(this.enregistrer)}>
-        {msgUnauthorized}
-        <Field
-            label="Username"
-            name="username"
-            component={this.renderUsernameField}
-        />
-        <Field
-        label="Password"
-        name="password"
-        component={this.renderPasswordField}
-    />
-        {buttonConnexion}
-    </form>
+            <form onSubmit={handleSubmit(this.enregistrer)} method="POST">
+                <Field
+                    label="Mail"
+                    name="username"
+                    component={this.renderUsernameField}
+                />
+                <Field
+                    label="Mot de Passe"
+                    name="password"
+                    component={this.renderPasswordField}
+                />
+                {buttonConnexion}
+
+            </form>
         );
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 function validate(values) {
     const errors = {};
 
     if(!values.username){
-        errors.username = "Veuillez saisir un Username !"
+        errors.username = "Veuillez saisir votre Mail  !"
     }
     if(!values.password){
-        errors.password = "Veuillez saisir un Password !"
+        errors.password = "Veuillez saisir votre Mot de passe !"
     }
     return errors;
 }
 
-const mapStateToProps = (state) => {
-    return {
-      user: state.userConnexion,
-      cookie:state.cookie
-    };
-}
+
+
+
 
 export default reduxForm({
     validate: validate,
     form: 'connexion'
 })(
-    connect(mapStateToProps,{ loginUser,addTokenIncookie })(UserConnexion)
+    connect(null,null)(UserConnexion)
 );

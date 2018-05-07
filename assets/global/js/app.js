@@ -5,9 +5,10 @@ global.$ = $;
 import 'font-awesome/scss/font-awesome.scss';
 import swal from 'sweetalert2'
 //BOOTSTRAP
+import 'bootstrap/scss/bootstrap.scss'
 import 'popper.js';
 import 'bootstrap';
-import 'bootstrap/scss/bootstrap.scss'
+
 
 import '../css/app.scss'
 
@@ -15,9 +16,6 @@ import '../css/app.scss'
 
 
 $(function () {
-    $('.zakaria').on('click',function () {
-        swal('Any fool can use a computer')
-    })
     $('[data-toggle="tooltip"]').tooltip()
 
     list();
