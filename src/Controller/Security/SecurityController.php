@@ -21,12 +21,18 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
+
+        if($this->getUser()){
+            return $this->redirectToRoute('home_middle_office');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
         $form = $this->createForm(LoginForm::class,[
             '_username' => $lastUsername
         ]);
+
         return $this->render(
             'Security\login.html.twig',
             array(
