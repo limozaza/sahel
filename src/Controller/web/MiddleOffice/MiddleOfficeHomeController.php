@@ -15,10 +15,21 @@ use Twig\Environment;
  */
 class MiddleOfficeHomeController
 {
-    public function __invoke(Environment $environment)
+
+    /**
+     * @var Environment
+     */
+    private $environment;
+
+    public function __construct(Environment $environment)
+    {
+        $this->environment = $environment;
+    }
+
+    public function __invoke()
     {
         return new Response(
-            $environment->render('MiddleOffice\home.html.twig')
+            $this->environment->render('MiddleOffice\home.html.twig')
         );
     }
 }

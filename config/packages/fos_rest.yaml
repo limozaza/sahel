@@ -1,0 +1,13 @@
+#app/config/config.yml
+
+fos_rest:
+    body_converter:
+        enabled: true  #convertir json => object (serializa)
+    view:
+        formats: { json: true, xml: false, rss: false } #format serialisation json
+        view_response_listener: true #
+    serializer:
+        serialize_null: true  #retourn les champ nulls
+    format_listener: #Serialization automatique au format JSON
+        rules:
+            - { path: '^/api', priorities: ['json'], fallback_format: 'json' }

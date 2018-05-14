@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,10 +39,32 @@ class User implements UserInterface
      */
     private $roles = [];
 
+//    /**
+//     * @ORM\OneToMany(targetEntity="Company", mappedBy="user")
+//     */
+//    private $companys;
+//
+//    public function __construct()
+//    {
+//        $this->companys = new ArrayCollection();
+//    }
+
+
+
     /**
      * @Assert\NotBlank(groups={"Registration"})
      */
     private $plainPassword;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Company", mappedBy="user")
+     */
+    private $companies;
+
+    public function __construct()
+    {
+        $this->companies = new ArrayCollection();
+    }
 
     public function getUsername()
     {
@@ -100,4 +124,37 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
         $this->password = null;
     }
+
+    /**
+     * @return Collection|Company[]
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    public function addCompany(Company $company): self
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies[] = $company;
+            $company->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompany(Company $company): self
+    {
+        if ($this->companies->contains($company)) {
+            $this->companies->removeElement($company);
+            // set the owning side to null (unless already changed)
+            if ($company->getUser() === $this) {
+                $company->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
