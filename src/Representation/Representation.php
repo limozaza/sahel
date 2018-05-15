@@ -2,25 +2,22 @@
 
 namespace App\Representation;
 
-use App\Entity\Article;
 use JMS\Serializer\Annotation as Serializer;
 
-class ArticleRepresentation
+class Representation
 {
-    /**
-     * @Serializer\Type(array<App\Entity\Article>)
-     */
+    
     public $data;
 
     public $meta;
 
-    public function __construct($articles, $limit, $offset, $articlesCount, $pageCount)
+    public function __construct($entites, $limit, $page, $articlesCount, $pageCount)
     {
-        $this->data = $articles;
+        $this->data = $entites;
         $this->addMeta('limit', $limit);
         $this->addMeta('pages', $pageCount);
         $this->addMeta('total_items', $articlesCount);
-        $this->addMeta('offset', $offset);
+        $this->addMeta('offset', (($page -1)* $limit));
 
     }
 

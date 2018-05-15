@@ -3,6 +3,8 @@ namespace App\Controller\api;
 
 use App\Entity\Article;
 use App\Representation\ArticleRepresentation;
+use App\Representation\Pagination;
+use App\Representation\Representation;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
@@ -22,6 +24,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class ArticleController extends AbstractController
 {
     use ControllerTrait;
+
+    /**
+     * @var Pagination
+     */
+    private $pagination;
+
+    public function __construct(Pagination $pagination)
+    {
+        $this->pagination = $pagination;
+    }
 
 
     /**
@@ -78,40 +90,11 @@ class ArticleController extends AbstractController
      */
     public function lists(Request $request)
     {
-//        $articles = $this->getDoctrine()->getRepository('App\Entity\Article')->findAll();
-//        if(empty($articles)){
-//            return new JsonResponse(['status'=> 'Not found'], Response::HTTP_NOT_FOUND);
-//        }
-//        return $articles;
-
-        $limit = $request->get('limit',2);
-        $page = $request->get('page',1);
-        $offset = ($page -1)* $limit;
-
-        $repo = $this->getDoctrine()->getRepository('App\Entity\Article');
-        $articles = $repo->findBy([], [], $limit, $offset);
-
-        $articlesCount = $repo->count([]);
-        $pageCount = (int)ceil($articlesCount/ $limit);
 
 
-        $articleRepresentation = new ArticleRepresentation($articles, $limit, $offset, $articlesCount, $pageCount);
-
-
-
-//        dump($limit);
-//        dump($page);
-//        dump($offset);
-//        dump($articles);
-//
-//        dump($articlesCount);
-//        dump($pageCount);
-
-        dump($articleRepresentation);
-
-
-
-        exit();
+        return $this->pagination->paginate(
+            $request, 'App\Entity\Article', []
+        );
     }
 
 
