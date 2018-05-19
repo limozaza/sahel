@@ -2,9 +2,10 @@
 namespace App\Controller\api;
 
 use App\Entity\Article;
+use App\Pagination\Filtering\Article\ArticleFilterDefinitionFactory;
+use App\Pagination\PageRequestFactory;
+use App\Pagination\Paginate\Article\ArticlePagination;
 use App\Representation\ArticleRepresentation;
-use App\Representation\Pagination;
-use App\Representation\Representation;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
@@ -26,13 +27,13 @@ class ArticleController extends AbstractController
     use ControllerTrait;
 
     /**
-     * @var Pagination
+     * @var ArticlePagination
      */
-    private $pagination;
+    private $articlePagination;
 
-    public function __construct(Pagination $pagination)
+    public function __construct(ArticlePagination $articlePagination)
     {
-        $this->pagination = $pagination;
+        $this->articlePagination = $articlePagination;
     }
 
 
@@ -91,9 +92,16 @@ class ArticleController extends AbstractController
     public function lists(Request $request)
     {
 
+        $pageRequestFactory             = new PageRequestFactory();
+        $page                           = $pageRequestFactory->fromRequest($request);
 
-        return $this->pagination->paginate(
-            $request, 'App\Entity\Article', []
+        $articleFilterDefinitionFactory = new ArticleFilterDefinitionFactory();
+        $articleFilterDefinition        = $articleFilterDefinitionFactory->factory($request);
+
+
+        return $this->articlePagination->paginate(
+            $page,
+            $articleFilterDefinition
         );
     }
 
