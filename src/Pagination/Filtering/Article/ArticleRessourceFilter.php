@@ -66,6 +66,17 @@ class ArticleRessourceFilter
             );
             $qb->setParameter('title', "%{$articleFilterDefinition->getContent()}%");
         }
+        if(null !== $articleFilterDefinition->getSortByArray())
+        {
+            foreach ($articleFilterDefinition->getSortByArray() as $by=>$order)
+            {
+                $expr = 'desc' == $order
+                    ? $qb->expr()->desc('article.'.$by)
+                    : $qb->expr()->asc('article.'.$by);
+                $qb->addOrderBy($expr);
+            }
+        }
+
         return $qb;
     }
 }

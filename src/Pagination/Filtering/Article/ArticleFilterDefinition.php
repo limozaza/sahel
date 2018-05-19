@@ -6,11 +6,15 @@ class ArticleFilterDefinition
 {
     private $title;
     private $content;
+    private $sortByQuery;
+    private $sortByArray;
 
-    public function __construct($title, $content)
+    public function __construct($title, $content, $sortByQuery, $sortByArray)
     {
         $this->title = $title;
         $this->content = $content;
+        $this->sortByQuery = $sortByQuery;
+        $this->sortByArray = $sortByArray;
     }
 
     /**
@@ -29,5 +33,19 @@ class ArticleFilterDefinition
         return $this->content;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSortByQuery()
+    {
+        return $this->sortByQuery;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getSortByArray()
+    {
+        return $this->sortByArray;
+    }
 }
