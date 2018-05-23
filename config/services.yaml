@@ -34,3 +34,10 @@ services:
         autowire: true
         tags:
             - { name: doctrine.event_subscriber}
+
+    app.normalizer.resource_validation_exception:
+        class: App\Normalize\NotFoundHttpExceptionNormalizer
+        arguments:
+            - { type: 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException' }
+        tags:
+            - { name: app.normalizer }

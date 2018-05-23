@@ -3,6 +3,8 @@
 fos_rest:
     body_converter:
         enabled: true  #convertir json => object (serializa)
+        validate: true
+        validation_errors_argument: validationErrors
     view:
         formats: { json: true, xml: false, rss: false } #format serialisation json
         view_response_listener: true #
@@ -11,3 +13,5 @@ fos_rest:
     format_listener: #Serialization automatique au format JSON
         rules:
             - { path: '^/api', priorities: ['json'], fallback_format: 'json' }
+            - { path: '^/', priorities: ['html', '*/*'], fallback_format: html, prefer_extension: true }
+

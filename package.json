@@ -31,6 +31,8 @@
     "build": "encore production"
   },
   "dependencies": {
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "react-loading": "^2.0.2",
+    "react-paginate": "^5.2.3"
   }
 }

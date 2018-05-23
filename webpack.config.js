@@ -12,6 +12,7 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('global', './assets/global/js/app.js')
     .addEntry('login', './assets/users/connexion/index.js')
+    .addEntry('article', './assets/articles/index.js')
 
     // uncomment if you use Sass/SCSS files
      .enableSassLoader()

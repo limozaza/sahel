@@ -31,6 +31,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/middle_office, roles: ROLE_USER }
-        # - { path: ^/profile, roles: ROLE_USER }
+#         - { path: ^/api, roles: ROLE_USER }
 
 
