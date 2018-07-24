@@ -13,7 +13,8 @@ use App\Entity\Movie;
 use FOS\RestBundle\Controller\ControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations as Rest;;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,6 +25,22 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class MovieController extends AbstractController
 {
     use ControllerTrait;
+
+
+    /**
+     * @Rest\View()
+     * @Rest\Get(
+     *     path="/{id}",
+     *     name="movie_show"
+     * )
+     */
+    public function show(?Movie $movie)
+    {
+        if(null === $movie){
+            return $this->view(null, Response::HTTP_NOT_FOUND);
+        }
+        return $movie;
+    }
 
 
     /**
@@ -62,5 +79,28 @@ class MovieController extends AbstractController
 //        );
         return $movie;
     }
+
+
+    /**
+     * @Rest\View()
+     * @Rest\Delete(
+     *     path="/{id}",
+     *     name="movie_delete"
+     * )
+     */
+    public function delete(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $movie = $em->getRepository('App\Entity\Movie')->find($request->get('id'));
+
+        if(empty($movie)){
+            return $this->view(null, Response::HTTP_NOT_FOUND);
+        }
+        $em->remove($movie);
+        $em->flush();
+    }
+
+
+
 
 }
